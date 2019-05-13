@@ -1,4 +1,6 @@
 import React from 'react';
+import RockPaperScissorsGame from '../../games/rock-paper-scissors/rock-paper-scissors.game';
+import TicTacToeGame from '../../games/tic-tac-toe/tic-tac-toe.game';
 
 export default class GamePage extends React.Component {
 
@@ -8,10 +10,21 @@ export default class GamePage extends React.Component {
             gameID: props.match.params.gameID
         }
 
-        console.log(this.state);
+        this.getGame = this.getGame.bind(this);
+    }
+
+    getGame() {
+        switch(this.state.gameID) {
+            case 'tic-tac-toe':
+                return <TicTacToeGame></TicTacToeGame>
+            case 'rock-paper-scissors':
+                return <RockPaperScissorsGame></RockPaperScissorsGame>
+            default:
+                return <div>Game Not Found</div>
+        }
     }
 
     render() {
-        return <div>{this.state.gameID}</div>;
+        return this.getGame();
     }
 }
