@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-import HomePage from './pages/home.page';
-import GamePage from './pages/game.page';
+import HomePage from './pages/home/home.page';
+import GamePage from './pages/game/game.page';
 
 function App() {
   return (

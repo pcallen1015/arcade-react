@@ -1,6 +1,6 @@
 import React from 'react';
 import './home.page.scss';
-import GamesService from '../services/games.service';
+import GamesService from '../../services/games.service';
 import { Link } from 'react-router-dom';
 
 export default class HomePage extends React.Component {
