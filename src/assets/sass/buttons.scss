@@ -1,0 +1,40 @@
+@import './variables.scss';
+
+.btn {
+    color: map-get($map: $colors-secondary, $key: white);
+    background-color: map-get($map: $colors-secondary, $key: darkGray2);
+    border: 2px solid transparent;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 3rem;
+    text-align: center;
+    padding: 0 2rem;
+    outline: none;
+    text-decoration: none;
+    display: inline-block;
+
+    &.btn--small {
+        border-radius: 1.125rem;
+        font-size: .75rem;
+        line-height: 2.25rem;
+        padding: 0 1.5rem;
+    }
+
+    &.selected {
+        background-color: map-get($map: $colors-core, $key: green);
+        color: map-get($map: $colors-core, $key: white);
+    }
+
+    &.btn--white-ghost {
+        color: map-get($map: $colors-secondary, $key: white);
+        background-color: transparent;
+        border-color: map-get($map: $colors-secondary, $key: white);
+
+        &:hover {
+            color: map-get($map: $colors-secondary, $key: darkGray2);
+            background-color: map-get($map: $colors-secondary, $key: white);
+        }
+    }
+}

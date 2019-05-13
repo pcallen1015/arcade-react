@@ -1,0 +1,31 @@
+@import '../../assets/sass/variables.scss';
+
+.container {
+    width: 500px;
+    height: 500px;
+    background-color: map-get($map: $colors-core, $key: white);
+    border: 4px solid map-get($map: $colors-core, $key: indigoBlue);
+    position: relative;
+
+    .content {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        width: 100%;
+
+        > div {
+            padding: 10px;
+        }
+
+        .moves {
+            display: flex;
+            flex-direction: row;
+
+            button {
+                margin: 0 4px;
+                width: 33%;
+            }
+        }
+    }
+}
