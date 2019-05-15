@@ -34,19 +34,21 @@ export default class RockPaperScissorsGame extends React.Component {
             outcome: null,
         });
 
-        let timer = setInterval(() => {
+        // Ensure the timer is cleared before starting (or restarting) it
+        if (this.timer) clearInterval(this.timer);
+        this.timer = setInterval(() => {
             const remaining = this.state.timeRemaining - 1;
             this.setState({ timeRemaining: remaining });
             if (this.state.timeRemaining <= 0) {
-                clearInterval(timer);
+                clearInterval(this.timer);
 
                 let result;
                 // Check result
                 const winStrings = WIN_STATES.map(state => state.join('/'));
                 const moves = [this.state.playerMove, this.state.opponentMove];
 
-                if ((this.playerMove && !this.opponentMove) || (winStrings.indexOf(moves.join('/')) > -1)) result = 'win';
-                else if ((this.opponentMove && !this.playerMove) || (winStrings.indexOf(moves.reverse().join('/')) > -1)) result = 'lose';
+                if ((this.state.playerMove && !this.state.opponentMove) || (winStrings.indexOf(moves.join('/')) > -1)) result = 'win';
+                else if ((this.state.opponentMove && !this.state.playerMove) || (winStrings.indexOf(moves.reverse().join('/')) > -1)) result = 'lose';
                 else result = 'draw';
 
                 // TODO: report result

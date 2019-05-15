@@ -12,6 +12,8 @@ export default class GamePage extends React.Component {
             gameID: props.match.params.gameID
         }
 
+        this.game = React.createRef();
+
         this.getGame = this.getGame.bind(this);
         this.newGame = this.newGame.bind(this);
     }
@@ -19,16 +21,17 @@ export default class GamePage extends React.Component {
     getGame() {
         switch (this.state.gameID) {
             case 'tic-tac-toe':
-                return <TicTacToeGame></TicTacToeGame>
+                return <TicTacToeGame ref={this.game}></TicTacToeGame>
             case 'rock-paper-scissors':
-                return <RockPaperScissorsGame></RockPaperScissorsGame>
+                return <RockPaperScissorsGame ref={this.game}></RockPaperScissorsGame>
             default:
                 return <div>Game Not Found</div>
         }
     }
 
     newGame() {
-        
+        // TODO: trigger a new game in the child game component
+        this.game.current.newGame();
     }
 
     render() {
