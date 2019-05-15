@@ -1,0 +1,51 @@
+@import '../../assets/sass/variables.scss';
+
+.board-container {
+    border: 4px solid map-get($map: $colors-core, $key: indigoBlue);
+    background-color: map-get($map: $colors-core, $key: ciscoBlue);
+    color: map-get($map: $colors-core, $key: white);
+    display: inline-block;
+    padding: 2rem;
+    position: relative;
+
+    table {
+        background-color: transparent;
+        font-size: 4rem;
+        border-collapse: collapse;
+    
+        tr {
+            &:not(:first-child) {
+                border-top: 6px solid;
+            }
+    
+            td {
+                width: 8rem;
+                height: 8rem;
+                text-align: center;
+                vertical-align: middle;
+                
+                &:not(:first-child) {
+                    border-left: 6px solid;
+                }
+            }
+        }
+    }
+
+    .board-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .65);
+        color: white;
+
+        .board-overlay-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+    }
+}
