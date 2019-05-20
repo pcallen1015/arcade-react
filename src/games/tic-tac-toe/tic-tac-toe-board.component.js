@@ -11,12 +11,15 @@ export default class TicTacToeBoard extends React.Component {
         this.checkForWinner = this.checkForWinner.bind(this);
         this.gameOver = this.gameOver.bind(this);
         this.reset = this.reset.bind(this);
+        this.getWinLineStyle = this.getWinLineStyle.bind(this);
 
         this.state = {
             board: this.initBoard(),
             gameState: 'playing', // playing, gameOver
             currentPlayer: 'X',
             outcome: null,
+            winType: null,
+            winIndex: null,
         }
         
     }
@@ -85,10 +88,12 @@ export default class TicTacToeBoard extends React.Component {
         this.checkForWinner();
     }
 
-    gameOver(outcome) {
+    gameOver(outcome, type, index) {
         this.setState({
             gameState: 'gameOver',
-            outcome
+            outcome,
+            winType: type,
+            winIndex: index
         });
     }  
 
@@ -105,8 +110,7 @@ export default class TicTacToeBoard extends React.Component {
         for (let r = 0; r < rows.length; r++) {
             winner = isWinner(rows[r])
             if (winner !== null) {
-                this.gameOver(winner);
-                return;
+                return this.gameOver(winner, 'row', r);
             }
         }
 
@@ -115,8 +119,7 @@ export default class TicTacToeBoard extends React.Component {
         for (let c = 0; c < cols.length; c++) {
             winner = isWinner(cols[c])
             if (winner !== null) {
-                this.gameOver(winner);
-                return;
+                return this.gameOver(winner, 'col', c);
             }
         }
 
@@ -125,15 +128,50 @@ export default class TicTacToeBoard extends React.Component {
         for (let d = 0; d < diag.length; d++) {
             winner = isWinner(diag[d])
             if (winner !== null) {
-                this.gameOver(winner);
-                return;
+                return this.gameOver(winner, 'diag', d);
             }
         }
 
         // DRAW
         if (this.cells.filter(cell => cell === null).length === 0) {
-            this.gameOver('draw');
-            return
+            return this.gameOver('draw', null, null);
+        }
+    }
+
+    getWinLineStyle() {
+        switch (this.state.winType) {
+            case 'row':
+                return {
+                    display: 'block',
+                    width: '100%',
+                    height: '10px',
+                    top: `${((2 * this.state.winIndex) + 1) * (100 / (2 * this.dim))}%`,
+                    left: '0%',
+                    transform: `translateY(-50%) rotate(0deg)`,
+                    transition: 'width 1s ease-in-out',
+                };
+            case 'col':
+                return {
+                    display: 'block',
+                    width: '10px',
+                    height: '100%',
+                    top: '0%',
+                    left: `${((2 * this.state.winIndex) + 1) * (100 / (2 * this.dim))}%`,
+                    transform: `translateX(-50%) rotate(0deg)`,
+                    transition: 'height 1s ease-in-out',
+                };
+            case 'diag':
+                return {
+                    display: 'block',
+                    width: '100%',
+                    height: '10px',
+                    top: '50%',
+                    left: '0%',
+                    transform: `translateY(-50%) rotate(${this.state.winIndex ? -45 : 45}deg)`,
+                    transition: 'height 1s ease-in-out',
+                };
+            default:
+                return null;
         }
     }
 
@@ -143,6 +181,8 @@ export default class TicTacToeBoard extends React.Component {
             gameState: 'playing',
             currentPlayer: 'X',
             outcome: null,
+            winType: null,
+            winIndex: null,
         });
     }
 
@@ -150,17 +190,22 @@ export default class TicTacToeBoard extends React.Component {
         return (
             <div>
                 <div className="board-container">
-                    <table>
-                        <tbody>
-                            {this.state.board.map((row, r) => 
-                                <tr key={r}>
-                                    {row.map((cell, c) => 
-                                        <td key={c} onClick={() => this.handleClick(r, c)}>{cell}</td>
-                                    )}
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <div style={{ position: 'relative', overflow: 'hidden' }}>
+                        <table>
+                            <tbody>
+                                {this.state.board.map((row, r) => 
+                                    <tr key={r}>
+                                        {row.map((cell, c) => 
+                                            <td key={c} onClick={() => this.handleClick(r, c)}>{cell}</td>
+                                        )}
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+
+                        <div className="win-line" style={this.getWinLineStyle()}></div>
+                    </div>
+                    
 
                     {this.state.gameState === 'gameOver' ?
                         <div className="board-overlay">
