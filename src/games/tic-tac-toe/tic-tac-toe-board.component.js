@@ -11,7 +11,8 @@ export default class TicTacToeBoard extends React.Component {
         this.checkForWinner = this.checkForWinner.bind(this);
         this.gameOver = this.gameOver.bind(this);
         this.reset = this.reset.bind(this);
-        this.getWinLineStyle = this.getWinLineStyle.bind(this);
+        this.getMaskStyle = this.getMaskStyle.bind(this);
+        this.getLineStyle = this.getLineStyle.bind(this);
 
         this.state = {
             board: this.initBoard(),
@@ -138,37 +139,46 @@ export default class TicTacToeBoard extends React.Component {
         }
     }
 
-    getWinLineStyle() {
+    getMaskStyle() {
         switch (this.state.winType) {
             case 'row':
                 return {
                     display: 'block',
-                    width: '100%',
-                    height: '10px',
-                    top: `${((2 * this.state.winIndex) + 1) * (100 / (2 * this.dim))}%`,
-                    left: '0%',
-                    transform: `translateY(-50%) rotate(0deg)`,
-                    transition: 'width 1s ease-in-out',
                 };
             case 'col':
                 return {
                     display: 'block',
-                    width: '10px',
-                    height: '100%',
-                    top: '0%',
-                    left: `${((2 * this.state.winIndex) + 1) * (100 / (2 * this.dim))}%`,
-                    transform: `translateX(-50%) rotate(0deg)`,
-                    transition: 'height 1s ease-in-out',
+                    transform: 'rotate(90deg)',
                 };
             case 'diag':
                 return {
                     display: 'block',
+                    transform: `${this.state.winIndex ? 'rotate(135deg)' : 'rotate(45deg)'}`
+                };
+            default:
+                return null;
+        }
+    }
+
+    getLineStyle() {
+        switch (this.state.winType) {
+            case 'row':
+                return {
+                    top: `${((2 * this.state.winIndex) + 1) * (100 / (2 * this.dim))}%`,
                     width: '100%',
-                    height: '10px',
+                    transform: `translateY(-50%)`,
+                };
+            case 'col':
+                return {
+                    bottom: `${((2 * this.state.winIndex) + 1) * (100 / (2 * this.dim))}%`,
+                    width: '100%',
+                    transform: `translateY(50%)`,
+                };
+            case 'diag':
+                return {
+                    width: '100%',
                     top: '50%',
-                    left: '0%',
-                    transform: `translateY(-50%) rotate(${this.state.winIndex ? -45 : 45}deg)`,
-                    transition: 'height 1s ease-in-out',
+                    transform: `translateY(-50%)`,
                 };
             default:
                 return null;
@@ -203,7 +213,9 @@ export default class TicTacToeBoard extends React.Component {
                             </tbody>
                         </table>
 
-                        <div className="win-line" style={this.getWinLineStyle()}></div>
+                        <div className="win-line-mask" style={this.getMaskStyle()}>
+                            <div className="line" style={this.getLineStyle()}></div>
+                        </div>
                     </div>
                     
 
