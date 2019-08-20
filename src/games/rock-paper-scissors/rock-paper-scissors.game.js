@@ -67,7 +67,7 @@ export default class RockPaperScissorsGame extends React.Component {
         this.start();
     }
 
-    getGameContent() {
+    renderGameContent() {
         switch (this.state.gameState) {
             case 'ready':
                 return <button className="btn" onClick={this.start}>Start!</button>;
@@ -100,7 +100,7 @@ export default class RockPaperScissorsGame extends React.Component {
         return (
             <div className="container">
                 <div className="content">
-                    {this.getGameContent()}
+                    {this.renderGameContent()}
                 </div>
             </div>
         );
