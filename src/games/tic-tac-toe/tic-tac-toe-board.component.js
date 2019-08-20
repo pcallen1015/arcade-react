@@ -91,21 +91,23 @@ export default class TicTacToeBoard extends React.Component {
 
     gameOver(outcome, type, index) {
 
-        // Log the result with the server
-        fetch('http://localhost:8080/wins', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                player: outcome,
-                game: 'Tic-Tac-Toe',
-                playedOn: new Date()
+        // Log the result with the server (if there was a winner)
+        if (outcome !== 'draw') {
+            fetch('http://localhost:8080/wins', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    player: outcome,
+                    game: 'Tic-Tac-Toe',
+                    playedOn: new Date()
+                })
             })
-        })
-        .catch(error => console.error(error))
-        .then(() => console.log('result logged'));
+            .catch(error => console.error(error))
+            .then(() => console.log('result logged'));
+        }
 
         // Update the state of the game
         this.setState({

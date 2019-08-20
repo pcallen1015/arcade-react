@@ -30,7 +30,7 @@ export default class RockPaperScissorsGame extends React.Component {
             gameState: 'choosingMove',
             timeRemaining: MOVE_TIME_LIMIT,
             playerMove: null,
-            opponentMove: MOVES[Math.floor(Math.random() * (MOVES.length - 1))],
+            opponentMove: MOVES[Math.floor(Math.random() * Math.floor(MOVES.length))],
             outcome: null,
         });
 
@@ -51,15 +51,32 @@ export default class RockPaperScissorsGame extends React.Component {
                 else if ((this.state.opponentMove && !this.state.playerMove) || (winStrings.indexOf(moves.reverse().join('/')) > -1)) result = 'lose';
                 else result = 'draw';
 
-                // TODO: report result
-
+                // Log the result with the server (if there was a winner)
+                if (result !== 'draw') {
+                    fetch('http://localhost:8080/wins', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            player: result === 'win' ? 'human' : 'computer',
+                            game: 'Rock-Paper-Scissors',
+                            playedOn: new Date()
+                        })
+                    })
+                    .catch(error => console.error(error))
+                    .then(() => console.log('Result Logged'));
+                }
+                
+                // Update local game state
                 this.setState({ gameState: 'gameOver', outcome: result });
             }
         }, 1000);
     }
 
     chooseMove(choice) {
-        console.info(`Player chose: ${choice}`);
+        console.info(`Player choice: ${choice}`);
         this.setState({ playerMove: choice });
     }
 
